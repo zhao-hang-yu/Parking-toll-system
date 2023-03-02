@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.VehicleMapper">
+    <resultMap id="vehicleMap" type="Vehicle">
+        <result property="carNumber" column="car_number"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="carType" column="car_type"/>
+        <result property="stopNumber" column="stop_number"/>
+    </resultMap>
+<!--    <insert id="add">-->
+<!--        insert into tb_vehicle (car_number, phone_number, car_type, state, stop_number, remark)-->
+<!--        values(#{carNumber}, #{phoneNumber}, #{carType}, #{state}, #{stopNumber}, #{remark});-->
+<!--    </insert>-->
+    <insert id="add">
+        insert into tb_vehicle (car_number, phone_number, car_type, state, stop_number, in_time, remark)
+        values(#{carNumber}, #{phoneNumber}, #{carType}, #{state}, #{stopNumber}, NOW(), #{remark});
+    </insert>
+
+    <update id="exitByIds">
+        update tb_vehicle set state = 0
+        where id in
+        <foreach collection="ids" separator="," item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="enterByIds">
+        update tb_vehicle set state = 1
+        where id in
+        <foreach collection="ids" separator="," item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectAll" resultMap="vehicleMap">
+        select * from tb_vehicle;
+    </select>
+
+    <select id="selectByPageAndCondition" resultMap="vehicleMap">
+        select * from tb_vehicle
+        <where>
+            <if test="vehicle.carNumber != null and vehicle.carNumber != ''">
+                car_number like #{carNumber}
+            </if>
+            <if test="vehicle.phoneNumber != null and vehicle.phoneNumber != ''">
+                and phone_number like #{vehicle.phoneNumber}
+            </if>
+            <if test="vehicle.carType != null">
+                and car_type = #{vehicle.carType}
+            </if>
+            <if test="vehicle.state != null">
+                and state = #{vehicle.state}
+            </if>
+        </where>
+        limit #{begin}, #{size}
+    </select>
+
+    <select id="selectTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*) from tb_vehicle
+        <where>
+            <if test="vehicle.carNumber != null and vehicle.carNumber != ''">
+                car_number like #{vehicle.carNumber}
+            </if>
+            <if test="vehicle.phoneNumber != null and vehicle.phoneNumber != ''">
+                and phone_number like #{vehicle.phoneNumber}
+            </if>
+            <if test="vehicle.carType != null">
+                and car_type = #{vehicle.carType}
+            </if>
+            <if test="vehicle.state != null">
+                and state = #{vehicle.state}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="vehicleMap">
+        select * from tb_vehicle where id = #{id};
+    </select>
+
+    <select id="selectByIds" resultMap="vehicleMap">
+        select * from tb_vehicle where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+</mapper>

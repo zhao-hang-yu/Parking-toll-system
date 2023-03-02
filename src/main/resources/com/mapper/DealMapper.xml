@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.DealMapper">
+    <resultMap id="DealMap" type="Deal">
+        <result property="carNumber" column="car_number"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="carType" column="car_type"/>
+        <result property="inTime" column="in_time"/>
+        <result property="outTime" column="out_time"/>
+    </resultMap>
+    <insert id="add">
+        insert into tb_deal ('car_number', 'phone_number', 'car_type', 'in_time', 'out_time', 'remark')values
+        (#{carNumber}, #{phoneNumber}, #{carType}, #{inTime}, NOW(), #{remark});
+    </insert>
+
+
+</mapper>
