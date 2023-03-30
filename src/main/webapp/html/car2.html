@@ -55,7 +55,7 @@
             <el-button type="primary" plain @click="dialogVisible = true">新增</el-button>
         </el-row>
 
-        <!--表单-->
+        <!--新增表单-->
         <el-dialog
                 title="添加车辆"
                 :visible.sync="dialogVisible"
@@ -69,20 +69,20 @@
                 </el-form-item>
                 <el-form-item label="车辆类型">
                     <el-select v-model="vehicle.carType" placeholder="小/中/大">
-                        <el-option label="小型车" value="0"></el-option>
-                        <el-option label="中型车" value="1"></el-option>
-                        <el-option label="大型车" value="2"></el-option>
+                        <el-option label="小型车(0)" value="0"></el-option>
+                        <el-option label="中型车(1)" value="1"></el-option>
+                        <el-option label="大型车(2)" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态">
                     <el-select v-model="vehicle.state" placeholder="场内/场外">
-                        <el-option label="场内" value="1"></el-option>
-                        <el-option label="场外" value="0"></el-option>
+                        <el-option label="场内(1)" value="1"></el-option>
+                        <el-option label="场外(0)" value="0"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="停车次数">
-                    <el-input placeholder="0" :disabled="true"></el-input>
-                </el-form-item>
+<!--                <el-form-item label="停车次数">-->
+<!--                    <el-input placeholder="0" :disabled="true"></el-input>-->
+<!--                </el-form-item>-->
                 <el-form-item label="备注">
                     <el-input :rows="3"  v-model="vehicle.remark">
                     </el-input>
@@ -90,6 +90,44 @@
                 <el-form-item>
                     <el-button type="primary" @click="addVehicle">提交</el-button>
                     <el-button @click="dialogVisible = false">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+        <!--修改表单-->
+        <el-dialog
+                title="修改信息"
+                :visible.sync="dialogVisible2"
+                width="30%">
+            <el-form ref="form" :model="veh" label-width="80px">
+                <el-form-item label="车牌号码">
+                    <el-input v-model="veh.carNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="车主电话">
+                    <el-input v-model="veh.phoneNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="车辆类型">
+                    <el-select v-model="veh.carType" placeholder="小/中/大">
+                        <el-option label="小型车" value="0"></el-option>
+                        <el-option label="中型车" value="1"></el-option>
+                        <el-option label="大型车" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="状态">
+                    <el-select v-model="veh.state" placeholder="场内/场外">
+                        <el-option label="场内" value="1"></el-option>
+                        <el-option label="场外" value="0"></el-option>
+                    </el-select>
+                </el-form-item>
+<!--                <el-form-item label="停车次数">-->
+<!--                    <el-input v-model="veh.stopNumber"></el-input>-->
+<!--                </el-form-item>-->
+                <el-form-item label="备注">
+                    <el-input :rows="3"  v-model="veh.remark">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="update">提交</el-button>
+                    <el-button @click="dialogVisible2 = false">取消</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -130,22 +168,25 @@
                     label="状态"
                     align="center">
             </el-table-column>
-            <el-table-column
-                    prop="stopNumber"
-                    label="停车次数"
-                    align="center" width="100px;">
-            </el-table-column>
+<!--            <el-table-column-->
+<!--                    prop="stopNumber"-->
+<!--                    label="停车次数"-->
+<!--                    align="center" width="100px;">-->
+<!--            </el-table-column>-->
             <el-table-column
                     prop="remarkStr"
                     label="备注"
                     align="center">
             </el-table-column>
             <el-table-column align="center" label="操作" width="300px;">
-                <el-row>
-                    <el-button type="success" @click="entryById">入场</el-button>
-                    <el-button type="primary" @click="updateById">修改</el-button>
-                    <el-button type="danger" @click="exitById">出场</el-button>
-                </el-row>
+                <template slot-scope="scope">
+                    <el-row>
+                        <el-button type="success" @click="enter(scope.row)">入场</el-button>
+                        <el-button type="primary" @click="selectById(scope.row)">修改</el-button>
+                        <el-button type="danger" @click="exit(scope.row);">出场</el-button>
+    <!--                    <el-button type="danger" @click="exit">出场</el-button>-->
+                    </el-row>
+                </template>
             </el-table-column>
         </el-table>
 
@@ -168,6 +209,10 @@
     <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
 
     <script>
+        // function exit(val) {
+        //     console.log(val.parent());
+        // }
+
         new Vue({
             el: ".all",
             mounted() {
@@ -183,15 +228,29 @@
                         phoneNumber: '',
                         carType: '',
                         status: '',
-                        stopNumber: '',
-                        remark: ''
+                        // stopNumber: '',
+                        remark: '',
+                        carTypeStr: '',
+                        stateStr: '',
+                        remarkStr: ''
+                    },
+                    veh: {
+                        carNumber: '',
+                        phoneNumber: '',
+                        carType: '',
+                        status: '',
+                        // stopNumber: '',
+                        remark: '',
+                        carTypeStr: '',
+                        stateStr: '',
+                        remarkStr: ''
                     },
                     tableData: [{
                         carNumber: "鸡1010100",
                         phoneNumber: "12345678900",
                         carType: "0",
                         status: "0",
-                        stopNumber: "0",
+                        // stopNumber: "0",
                         remark: "无"
                     }],
                     //每页展示数
@@ -200,7 +259,9 @@
                     totalCount: 100,
                     // 当前页码
                     currentPage: 1,
+                    //表单
                     dialogVisible: false,
+                    dialogVisible2: false,
                     // 复选框选中数据集合
                     multipleSelection: [],
                     // 选中的ids
@@ -220,6 +281,47 @@
                         this.tableData = resp.data.rows;
                         //设置总条数
                         this.totalCount = resp.data.totalCount;
+
+                    })
+                },
+                selectById(val) {
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Parking-toll-system/vehicle/selectById",
+                        data: val.id
+                    }).then(resp => {
+                        this.dialogVisible2 = true;
+                        this.veh = resp.data;
+                        console.log(resp.data);
+                    })
+                },
+                update() {
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Parking-toll-system/vehicle/update",
+                        data: this.veh
+                    }).then(resp => {
+                        if(resp.data == 'success') {
+                            this.veh = {
+                                carNumber: '',
+                                phoneNumber: '',
+                                carType: '',
+                                status: '',
+                                stopNumber: '',
+                                remark: ''
+                            };
+                            this.dialogVisible2 = false;
+                            this.selectAll();
+                            this.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            });
+                        } else {
+                            this.$message({
+                                message: '修改失败',
+                                type: 'error'
+                            })
+                        }
 
                     })
                 },
@@ -256,6 +358,45 @@
                             });
                         }
                     })
+                },
+                exit(val) {
+                    console.log("val:" + val);
+                    console.log("val.id:" + val.id)
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Parking-toll-system/vehicle/exit",
+                        data: val.id
+                        // data: JSON.stringify(this.val.id)
+                    }).then(resp => {
+                        if(resp.data == 'success') {
+                            console.log("exit success");
+                            this.$message({
+                                message: '出场成功',
+                                type: 'success'
+                            });
+                            this.selectAll();
+                        }
+                    })
+                    // //添加交易信息
+                    axios({
+                        method:"post",
+                        url:"http://localhost:8080/Parking-toll-system/deal/add",
+                        data:val.id
+                    }).then(resp => {
+                        if(resp.date == 'success') {
+                            console.log("add deal over");
+                        }
+                    })
+                    // //增加停车次数
+                    // axios({
+                    //     method: "post",
+                    //     url: "http://localhost:8080/Parking-toll-system/vehicle/addStopNumber",
+                    //     data: val.id
+                    // }).then(resp => {
+                    //     if(resp.data == 'success') {
+                    //         console.log("add stopNumber over");
+                    //     }
+                    // })
                 },
                 exitByIds() {
                     // 弹出确认提示框
@@ -319,6 +460,34 @@
                             message: '已取消删除'
                         });
                     });
+                },
+                enter(val) {
+                    console.log(val);
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Parking-toll-system/vehicle/enter",
+                        data: val.id
+                        // data: JSON.stringify(this.val.id)
+                    }).then(resp => {
+                        if(resp.data == 'success') {
+                            console.log(6666);
+                            this.$message({
+                                message: '入场成功',
+                                type: 'success'
+                            });
+                            this.selectAll();
+                        }
+                    })
+                    //修改入场时间
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Parking-toll-system/vehicle/updateInTime",
+                        data: val.id
+                    }).then(resp => {
+                        if(resp.data == 'success') {
+                            console.log("updateInTime");
+                        }
+                    })
                 },
                 enterByIds() {
                     // 弹出确认提示框
@@ -407,6 +576,9 @@
                     this.multipleSelection = val;
                     // console.log(this.multipleSelection)
                 },
+                handleSelection(val) {
+                    this.selection = val;
+                }
             }
         })
     </script>

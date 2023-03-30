@@ -30,6 +30,19 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public Vehicle selectById(int id) {
+        //获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //获取UserMapper对象
+        VehicleMapper mapper = sqlSession.getMapper(VehicleMapper.class);
+        //调用方法
+        Vehicle vehicle = mapper.selectById(id);
+        //释放资源
+        sqlSession.close();
+        return vehicle;
+    }
+
+    @Override
     public PageBean<Vehicle> selectByPageAndCondition(int currentPage, int pageSize, Vehicle vehicle) {
         //获取SqlSession对象
         SqlSession sqlSession = factory.openSession();
@@ -85,6 +98,19 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public void exit(int id) {
+        //获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //获取UserMapper对象
+        VehicleMapper mapper = sqlSession.getMapper(VehicleMapper.class);
+        //调用方法
+        mapper.exit(id);
+        sqlSession.commit();
+        //释放资源
+        sqlSession.close();
+    }
+
+    @Override
     public void enterByIds(int[] ids) {
         //获取SqlSession对象
         SqlSession sqlSession = factory.openSession();
@@ -96,6 +122,58 @@ public class VehicleServiceImpl implements VehicleService {
         //释放资源
         sqlSession.close();
     }
+
+    @Override
+    public void enter(int id) {
+        //获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //获取UserMapper对象
+        VehicleMapper mapper = sqlSession.getMapper(VehicleMapper.class);
+        //调用方法
+        mapper.enter(id);
+        sqlSession.commit();
+        //释放资源
+        sqlSession.close();
+    }
+
+    @Override
+    public void update(Vehicle vehicle) {
+        //获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //获取UserMapper对象
+        VehicleMapper mapper = sqlSession.getMapper(VehicleMapper.class);
+        //调用方法
+        mapper.update(vehicle);
+        sqlSession.commit();
+        //释放资源
+        sqlSession.close();
+    }
+
+    @Override
+    public void updateInTime(int id) {
+        //获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //获取UserMapper对象
+        VehicleMapper mapper = sqlSession.getMapper(VehicleMapper.class);
+        //调用方法
+        mapper.updateInTime(id);
+        sqlSession.commit();
+        //释放资源
+        sqlSession.close();
+    }
+
+//    @Override
+//    public void addStopNumber(int id) {
+//        //获取SqlSession对象
+//        SqlSession sqlSession = factory.openSession();
+//        //获取UserMapper对象
+//        VehicleMapper mapper = sqlSession.getMapper(VehicleMapper.class);
+//        //调用方法
+//        mapper.addStopNumber(id);
+//        sqlSession.commit();
+//        //释放资源
+//        sqlSession.close();
+//    }
 
 
 }

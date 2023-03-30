@@ -1,31 +1,43 @@
 package com.pojo;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Vehicle {
-    private Integer id;
-    private String carNumber;
-    private String phoneNumber;
+    protected Integer id;
+    protected String carNumber;
+    protected String phoneNumber;
     //车辆类型 0小型车1中型车2大型车
-    private Integer carType;
+    protected Integer carType;
     //状态 0不在停车场1在停车场
-    private Integer state;
-    private Integer stopNumber;
-    private String remark;
+    protected Integer state;
+//    protected Integer stopNumber;
+    protected String remark;
 
-    private Date inTime;
+    protected Date inTime;
 
     public Vehicle() {
     }
 
-    public Vehicle(Integer id, String carNumber, String phoneNumber, Integer carType, Integer state, Integer stopNumber, String remark) {
+    public Vehicle(Integer id, String carNumber, String phoneNumber, Integer carType, Integer state, String remark, Date inTime) {
         this.id = id;
         this.carNumber = carNumber;
         this.phoneNumber = phoneNumber;
         this.carType = carType;
         this.state = state;
-        this.stopNumber = stopNumber;
+//        this.stopNumber = stopNumber;
+        this.remark = remark;
+        this.inTime = inTime;
+    }
+
+    public Vehicle(Integer id, String carNumber, String phoneNumber, Integer carType, Integer state, String remark) {
+        this.id = id;
+        this.carNumber = carNumber;
+        this.phoneNumber = phoneNumber;
+        this.carType = carType;
+        this.state = state;
+//        this.stopNumber = stopNumber;
         this.remark = remark;
     }
 
@@ -69,13 +81,13 @@ public class Vehicle {
         this.state = state;
     }
 
-    public Integer getStopNumber() {
-        return stopNumber;
-    }
-
-    public void setStopNumber(Integer stopNumber) {
-        this.stopNumber = stopNumber;
-    }
+//    public Integer getStopNumber() {
+//        return stopNumber;
+//    }
+//
+//    public void setStopNumber(Integer stopNumber) {
+//        this.stopNumber = stopNumber;
+//    }
 
     public String getRemark() {
         return remark;
@@ -120,6 +132,11 @@ public class Vehicle {
         return remark;
     }
 
+    public String getInTimeStr() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return dateFormat.format(inTime);
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -128,8 +145,9 @@ public class Vehicle {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", carType=" + carType +
                 ", state=" + state +
-                ", stopNumber=" + stopNumber +
-                ", remark='" + remark + '\'' +
+//                ", stopNumber=" + stopNumber +
+                ", remark='" + remark +
+                ", inTime=" + inTime + '\'' +
                 '}';
     }
 }

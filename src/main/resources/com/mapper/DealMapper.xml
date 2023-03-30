@@ -10,10 +10,15 @@
         <result property="inTime" column="in_time"/>
         <result property="outTime" column="out_time"/>
     </resultMap>
+
     <insert id="add">
-        insert into tb_deal ('car_number', 'phone_number', 'car_type', 'in_time', 'out_time', 'remark')values
-        (#{carNumber}, #{phoneNumber}, #{carType}, #{inTime}, NOW(), #{remark});
+        insert into tb_deal (car_number, phone_number, car_type, in_time, out_time, money, remark)values
+        (#{carNumber}, #{phoneNumber}, #{carType}, #{inTime}, #{outTime}, #{money}, #{remark});
     </insert>
+
+    <select id="selectAll" resultMap="DealMap">
+        select * from tb_deal;
+    </select>
 
 
 </mapper>

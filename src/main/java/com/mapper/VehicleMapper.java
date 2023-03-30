@@ -49,6 +49,12 @@ public interface VehicleMapper {
     void add(Vehicle vehicle);
 
     /**
+     * 单出
+     * @param id
+     */
+    void exit(int id);
+
+    /**
      * 批量出场
      * @param ids
      */
@@ -59,4 +65,28 @@ public interface VehicleMapper {
      * @param ids
      */
     void enterByIds(@Param("ids") int[] ids);
+
+    /**
+     * 单入
+     * @param id
+     */
+    void enter(int id);
+
+    /**
+     * 修改
+     * @param vehicle
+     */
+    void update(@Param("vehicle") Vehicle vehicle);
+
+    /**
+     * 修改入场时间
+     * @param id
+     */
+    void updateInTime(int id);
+
+//    /**
+//     * 增加停车次数
+//     * @param id
+//     */
+//    void addStopNumber(int id);
 }

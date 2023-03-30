@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>用户</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .all {
+            margin: 0px auto;
+        }
+    </style>
 </head>
 <body>
     <div class="all">
@@ -34,11 +43,11 @@
             data() {
                 return {
                     size:'',
-                    user:[{
-                        username,
-                        id,
-                        password
-                    }]
+                    user:{
+                        username:"",
+                        id:"",
+                        password:""
+                    }
                 }
             }
         })

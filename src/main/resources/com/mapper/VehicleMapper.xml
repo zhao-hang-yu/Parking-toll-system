@@ -7,16 +7,20 @@
         <result property="carNumber" column="car_number"/>
         <result property="phoneNumber" column="phone_number"/>
         <result property="carType" column="car_type"/>
-        <result property="stopNumber" column="stop_number"/>
+        <result property="inTime" column="in_time" />
     </resultMap>
 <!--    <insert id="add">-->
 <!--        insert into tb_vehicle (car_number, phone_number, car_type, state, stop_number, remark)-->
 <!--        values(#{carNumber}, #{phoneNumber}, #{carType}, #{state}, #{stopNumber}, #{remark});-->
 <!--    </insert>-->
     <insert id="add">
-        insert into tb_vehicle (car_number, phone_number, car_type, state, stop_number, in_time, remark)
-        values(#{carNumber}, #{phoneNumber}, #{carType}, #{state}, #{stopNumber}, NOW(), #{remark});
+        insert into tb_vehicle (car_number, phone_number, car_type, state, in_time, remark)
+        values(#{carNumber}, #{phoneNumber}, #{carType}, #{state}, NOW(), #{remark});
     </insert>
+
+<!--    <update id="addStopNumber">-->
+<!--        update tb_vehicle set stop_number = stop_number + 1 where id = #{id};-->
+<!--    </update>-->
 
     <update id="exitByIds">
         update tb_vehicle set state = 0
@@ -25,12 +29,32 @@
             #{id}
         </foreach>
     </update>
+
     <update id="enterByIds">
         update tb_vehicle set state = 1
         where id in
         <foreach collection="ids" separator="," item="id" open="(" close=")">
             #{id}
         </foreach>
+    </update>
+
+    <update id="exit">
+        update tb_vehicle set state = 0 where id = #{id};
+    </update>
+
+    <update id="enter">
+        update tb_vehicle set state = 1 where id = #{id};
+    </update>
+
+    <update id="update">
+        update tb_vehicle
+        set car_number = #{vehicle.carNumber}, phone_number = #{vehicle.phoneNumber}, car_type = #{vehicle.carType}
+            , state = #{vehicle.state}, remark = #{vehicle.remark}
+        where id = #{vehicle.id};
+    </update>
+
+    <update id="updateInTime">
+        update tb_vehicle set in_time = NOW() where id = #{id};
     </update>
 
     <select id="selectAll" resultMap="vehicleMap">

@@ -52,19 +52,11 @@
                 </el-aside>
 
                 <el-main class="el-main">
-                    <iframe v-bind:src="iframeUrl" width="100%" height="800px" frameborder="0"></iframe>
+                    <iframe v-bind:src="iframeUrl" width="100%" height="850px" frameborder="0"></iframe>
                 </el-main>
 
             </el-container>
         </el-container>
-
-        <el-switch
-                v-model="value"
-                active-color="#13ce66"
-                inactive-color="#ff4949">
-        </el-switch>
-
-        <h1> 你好，中国 </h1>
 
     </div>
 </body>
